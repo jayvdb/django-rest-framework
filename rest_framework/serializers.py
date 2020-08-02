@@ -746,7 +746,11 @@ class ListSerializer(BaseSerializer):
 
     @property
     def data(self):
-        ret = super().data
+        try:
+            ret = super().data
+        except OverflowError as e:
+            raise ValidationError(str(e))
+
         return ReturnList(ret, serializer=self)
 
     @property
